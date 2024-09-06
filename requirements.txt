@@ -1,4 +1,4 @@
 Django>=4.2,<5.1
 wagtail>=6.2,<6.3
-psycopg2
-python-decouple
+psycopg2==2.9.9
+python-decouple==3.8
