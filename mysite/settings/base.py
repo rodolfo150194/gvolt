@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
-from decouple import config
+# from decouple import config
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
@@ -92,10 +92,10 @@ DATABASES = {
     # },
     "default": {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': config('POSTGRES_DATABASE'),
-        'USER': config("POSTGRES_USER"),
-        'PASSWORD': config("POSTGRES_PASSWORD"),
-        'HOST': config("POSTGRES_HOST"),
+        'NAME': 'verceldb',
+        'USER': 'default',
+        'PASSWORD': 'ot0re8LlshYB',
+        'HOST': 'ep-falling-cell-a4xqgpk6-pooler.us-east-1.aws.neon.tech',
         'PORT': '5432',
     }
 }
