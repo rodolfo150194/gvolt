@@ -29,6 +29,13 @@ class HomePage(Page):
 
     ]
 
+    def get_context(self, request):
+        context = super().get_context(request)
+        about = AboutPage.objects.live().first()
+
+        context['about'] = about
+        return context
+
 
 class AboutPage(Page):
     template = 'about/about_page.html'
@@ -191,7 +198,7 @@ class EstadisticaPage(Page):
 
 # [Estadistica Importante] - Fin
 
-# [Programas] - Inicio
+# [Partner] - Inicio
 @register_snippet
 class Partner(models.Model):
     image = models.ForeignKey(
@@ -208,7 +215,7 @@ class Partner(models.Model):
 
     def __str__(self):
         return self.nombre or "Patrocinadores"
-# [Programas] - Fin
+# [Partner] - Fin
 
 
 # [Galeria] - Fin
@@ -272,7 +279,7 @@ class GaleriaItem(Orderable):
 
 class CustomPage(Page):
     template = 'custom/custom_page.html'
-    nombre = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
     body = StreamField([
         ('texto_imagen_arriba', TextImageTopBlock()),
         ('texto_imagen_abajo', TextImageBottomBlock()),
@@ -288,11 +295,10 @@ class CustomPage(Page):
         ('estadisticas', CounterBlock()),
         ('documento', DocumentBlock()),
         ('pestannas', TabBlock()),
-        # Puedes agregar más bloques aquí
     ], null=True, blank=True)
 
     content_panels = Page.content_panels + [
-        FieldPanel('nombre'),
+        FieldPanel('name'),
         FieldPanel('body'),
     ]
 
@@ -310,3 +316,73 @@ class CustomPage(Page):
         return context
 
 
+class ServicesIndexPage(Page):
+    template = "services/services_index_page.html"
+
+    max_count = 1
+    intro = RichTextField(blank=True)
+    content_panels = Page.content_panels + [
+        FieldPanel('intro', classname="full")
+    ]
+    subpage_types = ['ServicesPage']
+
+
+class ServicesPage(Page):
+    template = "services/services_page.html"
+
+    name = models.CharField(max_length=255)
+    order = models.IntegerField(verbose_name='Orden')
+    estado = models.BooleanField(default=True)
+    description = RichTextField(blank=True)
+    icono = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+    image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+    contenido_extra = StreamField([
+        ('texto_imagen_arriba', TextImageTopBlock()),
+        ('texto_imagen_abajo', TextImageBottomBlock()),
+        ('texto_imagen_derecha', TextImageRightBlock()),
+        ('texto_imagen_izquierda', TextImageLeftBlock()),
+        ('texto_primario_y_secundario', TextPrimarySecondaryBlock()),
+        ('cita', QuoteBlock()),
+        ('galeria', GalleryBlock()),
+        ('video_embebido', VideoEmbedBlock()),
+        ('boton_mas_accion', CallToActionBlock()),
+        ('accordion', AccordionBlock()),
+        ('caracteristica', FeatureListBlock()),
+        ('estadisticas', CounterBlock()),
+        ('documento', DocumentBlock()),
+        ('pestannas', TabBlock()),
+    ], null=True, blank=True)
+
+    content_panels = Page.content_panels + [
+        MultiFieldPanel([
+            FieldPanel('name'),
+            FieldPanel('order'),
+            FieldPanel('estado'),
+            FieldPanel('description'),
+            FieldPanel('icono'),
+            FieldPanel('image'),
+        ], heading="Información del Módulo"),
+        FieldPanel('contenido_extra', classname="full"),
+    ]
+
+    class Meta:
+        verbose_name = "Service"
+        verbose_name_plural = "Services"
+
+    def get_context(self, request):
+        context = super().get_context(request)
+        about = AboutPage.objects.live().first()
+        context['about'] = about
+        return context
