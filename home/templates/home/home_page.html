@@ -4,16 +4,14 @@
 {% block body_class %}template-homepage{% endblock %}
 
 {% block extra_css %}
-
-    {% comment %}
-Delete the line below if you're just getting started and want to remove the welcome screen!
-{% endcomment %}
+    {#    <link href="{% static 'lib/transition/transition.min.css' %}" rel="stylesheet">#}
+   
 {% endblock extra_css %}
 
 {% block content %}
     <!-- Spinner Start -->
-    
-    
+
+
     <!-- Carousel Start -->
     <div class="container-fluid p-0 pb-5">
         <div class="owl-carousel header-carousel position-relative">
@@ -146,7 +144,8 @@ Delete the line below if you're just getting started and want to remove the welc
                              style="object-fit: cover;" alt="">
                     </div>
                 </div>
-                <div class="col-lg-6 about-text py-5 wow fadeIn" data-wow-delay="0.5s">
+                <div class="col-lg-6 about-text py-5 wow fadeIn"
+                     data-wow-delay="0.5s">
                     <div class="p-lg-5 pe-lg-0">
                         <div class="section-title text-start">
                             <h1 class="display-5 mb-4">About Us</h1>
@@ -379,7 +378,7 @@ Delete the line below if you're just getting started and want to remove the welc
                         </div>
                         <div class="border border-5 border-light border-top-0 p-4">
                             <p class="text-primary fw-medium mb-2">General Carpentry</p>
-                            <h5 class="lh-base mb-0">Wooden Furniture Manufacturing And Remodeling</a>
+                            <h5 class="lh-base mb-0">Wooden Furniture Manufacturing And Remodeling</h5>
                         </div>
                     </div>
                 </div>
@@ -396,7 +395,7 @@ Delete the line below if you're just getting started and want to remove the welc
                         </div>
                         <div class="border border-5 border-light border-top-0 p-4">
                             <p class="text-primary fw-medium mb-2">Custom Carpentry</p>
-                            <h5 class="lh-base mb-0">Wooden Furniture Manufacturing And Remodeling</a>
+                            <h5 class="lh-base mb-0">Wooden Furniture Manufacturing And Remodeling</h5>
                         </div>
                     </div>
                 </div>
@@ -421,8 +420,9 @@ Delete the line below if you're just getting started and want to remove the welc
         </div>
     </div>
     <!-- Projects End -->
-
-
+    {#    <div transition-style class="--in-custom">#}
+    {#        A custom transitioned element#}
+    {#    </div>#}
     <!-- Quote Start -->
     <div class="container-fluid bg-light overflow-hidden my-5 px-lg-0">
         <div class="container quote px-lg-0">
@@ -477,25 +477,28 @@ Delete the line below if you're just getting started and want to remove the welc
         </div>
     </div>
     <!-- Quote End -->
-{#    <div class="container-fluid h-100">#}
-{#        <div class="d-flex gap-5">#}
-{#            <div class="w-75">#}
-{#                <div id="map"></div>#}
-{#            </div>#}
-{#            <div class="w-25">#}
-{#                <p>asd</p>#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
+    {#    <div class="container-fluid h-100">#}
+    {#        <div class="d-flex gap-5">#}
+    {#            <div class="w-75">#}
+    {#                <div id="map"></div>#}
+    {#            </div>#}
+    {#            <div class="w-25">#}
+    {#                <p>asd</p>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </div>#}
     <div class="container-fluid bg-light overflow-hidden px-lg-0" style="margin: 6rem 0;">
         <div class="container contact px-lg-0">
             <div class="row g-0 mx-lg-0">
-                <div class="col-lg-6 contact-text py-5 wow fadeIn" data-wow-delay="0.5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeIn;">
+                <div class="col-lg-6 contact-text py-5 wow fadeIn" data-wow-delay="0.5s"
+                     style="visibility: visible; animation-delay: 0.5s; animation-name: fadeIn;">
                     <div class="p-lg-5 ps-lg-0">
                         <div class="section-title text-start">
                             <h1 class="display-5 mb-4">Contact Us</h1>
                         </div>
-                        <p class="mb-4">The contact form is currently inactive. Get a functional and working contact form with Ajax &amp; PHP in a few minutes. Just copy and paste the files, add a little code and you're done. <a href="https://htmlcodex.com/contact-form">Download Now</a>.</p>
+                        <p class="mb-4">The contact form is currently inactive. Get a functional and working contact
+                            form with Ajax &amp; PHP in a few minutes. Just copy and paste the files, add a little code
+                            and you're done. <a href="https://htmlcodex.com/contact-form">Download Now</a>.</p>
                         <form>
                             <div class="row g-3">
                                 <div class="col-md-6">
@@ -518,7 +521,8 @@ Delete the line below if you're just getting started and want to remove the welc
                                 </div>
                                 <div class="col-12">
                                     <div class="form-floating">
-                                        <textarea class="form-control" placeholder="Leave a message here" id="message" style="height: 100px"></textarea>
+                                        <textarea class="form-control" placeholder="Leave a message here" id="message"
+                                                  style="height: 100px"></textarea>
                                         <label for="message">Message</label>
                                     </div>
                                 </div>
@@ -532,21 +536,38 @@ Delete the line below if you're just getting started and want to remove the welc
                 <div class="col-lg-6 pe-lg-0" style="min-height: 400px;">
                     <div class="position-relative h-100">
                         <div id="map"></div>
-{#                        <iframe class="position-absolute w-100 h-100" style="object-fit: cover;" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3001156.4288297426!2d-78.01371936852176!3d42.72876761954724!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4ccc4bf0f123a5a9%3A0xddcfc6c1de189567!2sNew%20York%2C%20USA!5e0!3m2!1sen!2sbd!4v1603794290143!5m2!1sen!2sbd" frameborder="0" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>#}
+                        {#                        <iframe class="position-absolute w-100 h-100" style="object-fit: cover;" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3001156.4288297426!2d-78.01371936852176!3d42.72876761954724!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4ccc4bf0f123a5a9%3A0xddcfc6c1de189567!2sNew%20York%2C%20USA!5e0!3m2!1sen!2sbd!4v1603794290143!5m2!1sen!2sbd" frameborder="0" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>#}
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
 
 
-   
 
+
+    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Título del Modal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    Información del modal.
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center">
+                        <a href="#" id="modalLink" class="btn btn-primary">Ver más detalles</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     {% comment %}
 Delete the line below if you're just getting started and want to remove the welcome screen!
 {% endcomment %}
-
+    
 {% endblock content %}
 {% block extra_js %}
     <script src="{% static 'lib/highmap/highmaps.js' %}"></script>
@@ -623,11 +644,29 @@ Delete the line below if you're just getting started and want to remove the welc
                     dataLabels: {
                         enabled: true,
                         format: '{point.name}'
+                    },
+                    point: {
+                        events: {
+                            click: function () {
+                                mostrarResumenProvincia(this.detalle);
+                            }
+                        }
                     }
                 }]
             });
 
         })();
 
+        function mostrarResumenProvincia(detalle) {
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+            const modalLink = document.getElementById('modalLink');
+
+            modalTitle.textContent = `Resumen sobre`;
+            modalBody.innerHTML = `Hola`;
+            modalLink.href = `#seccion_acciones`;
+
+            $('#infoModal').modal('show');
+        }
     </script>
 {% endblock %}
