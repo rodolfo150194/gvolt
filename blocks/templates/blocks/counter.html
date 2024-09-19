@@ -1,0 +1,49 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+{#<div class="row g-5 my-5">#}
+{#    {% for contador in value.contadores %}#}
+{#        {% if forloop.first %}#}
+{#            <div class="d-flex justify-content-around">#}
+{#                {% elif forloop.counter == 5 %}#}
+{#            </div>#}
+{#            <div class="d-flex justify-content-around">#}
+{#        {% endif %}#}
+{##}
+{#    <div class=" text-center wow fadeIn" data-wow-delay="0.1s">#}
+{#        <h1 class="display-4" data-toggle="counter-up">{{ contador.cantidad }}</h1>#}
+{#        <span class="fs-5 fw-semi-bold">{{ contador.nombre }}</span>#}
+{#    </div>#}
+{##}
+{#    {% if forloop.last %}#}
+{#        </div>#}
+{#    {% endif %}#}
+{#    {% endfor %}#}
+{##}
+{#</div>#}
+
+<div class="container my-5">
+    <div class="row g-5">
+        {% for contador in value.contadores %}
+            {% if forloop.first %}
+                <div class="col-12 col-md-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.1s">
+                    <h1 class="display-4" data-toggle="counter-up">{{ contador.cantidad }}</h1>
+                    <span class="fs-5 fw-semi-bold">{{ contador.nombre }}</span>
+                </div>
+            {% elif forloop.counter == 5 %}
+                </div>
+                <div class="row g-5">
+                    <div class="col-12 col-md-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.1s">
+                        <h1 class="display-4" data-toggle="counter-up">{{ contador.cantidad }}</h1>
+                        <span class="fs-5 fw-semi-bold">{{ contador.nombre }}</span>
+                    </div>
+            {% else %}
+                <div class="col-12 col-md-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.1s">
+                    <h1 class="display-4" data-toggle="counter-up">{{ contador.cantidad }}</h1>
+                    <span class="fs-5 fw-semi-bold">{{ contador.nombre }}</span>
+                </div>
+            {% endif %}
+
+            {% if forloop.last %}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>

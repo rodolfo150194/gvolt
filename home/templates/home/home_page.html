@@ -1,355 +1,152 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static wagtailimages_tags wagtailcore_tags widget_tweaks %}
 {% block title %}Home{% endblock %}
 {% block body_class %}template-homepage{% endblock %}
 
 {% block extra_css %}
     {#    <link href="{% static 'lib/transition/transition.min.css' %}" rel="stylesheet">#}
-   
+
 {% endblock extra_css %}
 
 {% block content %}
-    <!-- Spinner Start -->
+
+    {% if page.carousel_items %}
+        <!-- Carousel Start -->
+        <div class="container-fluid p-0 pb-5">
+            <div class="owl-carousel header-carousel position-relative">
+                {% for carousel in page.carousel_items.all %}
+                    <div class="owl-carousel-item position-relative">
+                        {% image carousel.image original as img_carousel %}
+                        <img class="img-fluid" src="{{ img_carousel.url }}" alt="">
+                        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center"
+                             style="background: rgba(53, 53, 53, .7);">
+                            <div class="container">
+                                <div class="row justify-content-center">
+                                    <div class="col-12 col-lg-8 text-center">
+                                        {% if carousel.caption_2 %}
+                                            <h5 class="text-white text-uppercase mb-3 animated slideInDown">{{ carousel.caption }}</h5>
+                                            <h1 class="display-3 text-white animated slideInDown mb-4">{{ carousel.caption_2 }}</h1>
+                                        {% else %}
+                                            <h1 class="display-3 text-white animated slideInDown mb-4">{{ carousel.caption }}</h1>
+                                        {% endif %}
+                                        <a href="#about"
+                                           class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInUp">Read
+                                            More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <!-- Carousel End -->
+    {% endif %}
 
 
-    <!-- Carousel Start -->
-    <div class="container-fluid p-0 pb-5">
-        <div class="owl-carousel header-carousel position-relative">
-            <div class="owl-carousel-item position-relative">
-                <img class="img-fluid" src="{% static 'img/carousel-1.jpg' %}" alt="">
-                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center"
-                     style="background: rgba(53, 53, 53, .7);">
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-12 col-lg-8 text-center">
-                                <h5 class="text-white text-uppercase mb-3 animated slideInDown">Welcome To WooDY</h5>
-                                <h1 class="display-3 text-white animated slideInDown mb-4">Best Carpenter & Craftsman
-                                    Services</h1>
-                                <p class="fs-5 fw-medium text-white mb-4 pb-2">Vero elitr justo clita lorem. Ipsum dolor
-                                    at sed stet sit diam no. Kasd rebum ipsum et diam justo clita et kasd rebum sea
-                                    elitr.</p>
-                                <a href="" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Read
-                                    More</a>
-                                <a href="" class="btn btn-light py-md-3 px-md-5 animated slideInRight">Free Quote</a>
+    {% if about %}
+        <!-- About Start -->
+        <div class="container-fluid overflow-hidden px-lg-0 my-5" id="about">
+            <div class="container about px-lg-0">
+                <div class="row g-0 mx-lg-0">
+                    <div class="col-lg-6 about-text py-5">
+                        <div class="p-lg-5 pe-lg-0">
+                            <span class="bg-primary p-2 display-5 text-white wow fadeInLeft"
+                                  data-wow-delay="0.5s">{{ about.intro_first }}</span>
+                            <div class="text-end mt-2 mb-3">
+                                <span class="display-5 p-2 wow fadeInRight"
+                                      data-wow-delay="1.7s">{{ about.intro_second }}</span>
                             </div>
+                            {{ about.description_short | richtext }}
+                            <a href="{% slugurl 'about' %}" class="btn btn-primary py-3 px-5 mt-3 ">Explore More</a>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="owl-carousel-item position-relative">
-                <img class="img-fluid" src="{% static 'img/carousel-2.jpg' %}" alt="">
-                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center"
-                     style="background: rgba(53, 53, 53, .7);">
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-12 col-lg-8 text-center">
-                                <h5 class="text-white text-uppercase mb-3 animated slideInDown">Welcome To WooDY</h5>
-                                <h1 class="display-3 text-white animated slideInDown mb-4">Best Carpenter & Craftsman
-                                    Services</h1>
-                                <p class="fs-5 fw-medium text-white mb-4 pb-2">Vero elitr justo clita lorem. Ipsum dolor
-                                    at sed stet sit diam no. Kasd rebum ipsum et diam justo clita et kasd rebum sea
-                                    elitr.</p>
-                                <a href="" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Read
-                                    More</a>
-                                <a href="" class="btn btn-light py-md-3 px-md-5 animated slideInRight">Free Quote</a>
-                            </div>
+                    <div class="col-lg-6 ps-lg-0" style="min-height: 400px;">
+                        <div class="h-100 text-center align-content-center wow fadeInRight">
+                            {% image about.image original as about_img %}
+                            <img class="img-fluid w-75 " src="{{ about_img.url }}"
+                                    {#                             style="object-fit: cover;"#}
+                                 alt="">
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="owl-carousel-item position-relative">
-                <img class="img-fluid" src="{% static 'img/carousel-3.jpg' %}" alt="">
-                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center"
-                     style="background: rgba(53, 53, 53, .7);">
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-12 col-lg-8 text-center">
-                                <h5 class="text-white text-uppercase mb-3 animated slideInDown">Welcome To WooDY</h5>
-                                <h1 class="display-3 text-white animated slideInDown mb-4">Best Carpenter & Craftsman
-                                    Services</h1>
-                                <p class="fs-5 fw-medium text-white mb-4 pb-2">Vero elitr justo clita lorem. Ipsum dolor
-                                    at sed stet sit diam no. Kasd rebum ipsum et diam justo clita et kasd rebum sea
-                                    elitr.</p>
-                                <a href="" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Read
-                                    More</a>
-                                <a href="" class="btn btn-light py-md-3 px-md-5 animated slideInRight">Free Quote</a>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Carousel End -->
-
-
-    <!-- Feature Start -->
-    <div class="container-xxl py-5">
-        <div class="container">
-            <div class="row g-5">
-                <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.1s">
-                    <div class="d-flex align-items-center justify-content-between mb-2">
-                        <div class="d-flex align-items-center justify-content-center bg-light"
-                             style="width: 60px; height: 60px;">
-                            <i class="fa fa-user-check fa-2x text-primary"></i>
+        <!-- About End -->
+    {% endif %}
+    {% if about.fragments_information.all.count > 0 %}
+        {% for frag in about.fragments_information.all %}
+            <div class="container w-75 text-center py-5">
+                <div class="row g-5 align-items-center">
+                    {% if forloop.counter0|divisibleby:2 %}
+                        <div class="offset-2 col-lg-5">
+                            {% image frag.imagen original as img_frag %}
+                            <img class="img-fluid rounded wow fadeInLeft" src="{{ img_frag.url }}" alt="" 
+                                 style="clip-path: polygon(75% 0%, 100% 50%, 75% 100%, 0% 100%, 25% 50%, 0% 0%);">
                         </div>
-                        <h1 class="display-1 text-light mb-0">01</h1>
-                    </div>
-                    <h5>Creative Designers</h5>
+                        <div class="col-lg-5 wow fadeInRight" data-wow-delay="0.1s">
+                            <h1 class="display-5 mb-4">{{ frag.name }}</h1>
+                            <p class="mb-4">{{ frag.descripcion | richtext }}</p>
+                        </div>
+                    {% else %}
+                        <div class="col-lg-5 wow fadeInLeft" data-wow-delay="0.1s">
+                            <h1 class="display-5 mb-4">{{ frag.name }}</h1>
+                            <p class="mb-4">{{ frag.descripcion | richtext }}</p>
+                        </div>
+                        <div class="col-lg-5">
+                            {% image frag.imagen original as img_frag %}
+                            <img class="img-fluid rounded wow fadeInRight" src="{{ img_frag.url }}" alt=""
+                                 style="clip-path: polygon(100% 0%, 75% 50%, 100% 100%, 25% 100%, 0% 50%, 25% 0%);">
+                        </div>
+                    {% endif %}
                 </div>
-                <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.3s">
-                    <div class="d-flex align-items-center justify-content-between mb-2">
-                        <div class="d-flex align-items-center justify-content-center bg-light"
-                             style="width: 60px; height: 60px;">
-                            <i class="fa fa-check fa-2x text-primary"></i>
-                        </div>
-                        <h1 class="display-1 text-light mb-0">02</h1>
-                    </div>
-                    <h5>Quality Products</h5>
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% if services %}
+        <!-- Service Start -->
+        <div class="container-xxl py-5">
+            <div class="container" id="services">
+                <div class="section-title text-center">
+                    <h1 class="display-5 mb-5">Our Services</h1>
                 </div>
-                <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.5s">
-                    <div class="d-flex align-items-center justify-content-between mb-2">
-                        <div class="d-flex align-items-center justify-content-center bg-light"
-                             style="width: 60px; height: 60px;">
-                            <i class="fa fa-drafting-compass fa-2x text-primary"></i>
+                <div class="row g-4">
+                    {% for service in services %}
+                        <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.1s">
+                            <div class="service-item ">
+                                <div class="overflow-hidden" style="width: 100%;height: 250px;overflow: hidden;">
+                                    {% image service.image original as service_img %}
+                                    <img class="img-fluid" src="{{ service_img.url }}" alt=""
+                                         style="width: 100%;height: 100%;object-fit: cover;object-position: center;">
+                                </div>
+                                <div class="p-4 text-center border border-5 border-light border-top-0">
+                                    <h4 class="mb-3">{{ service.name }}</h4>
+                                    <p>{{ service.description_short | richtext }}.</p>
+                                    <a class="fw-medium" href="{% pageurl service %}">Read More<i
+                                            class="fa fa-arrow-right ms-2"></i></a>
+                                </div>
+                            </div>
                         </div>
-                        <h1 class="display-1 text-light mb-0">03</h1>
-                    </div>
-                    <h5>Free Consultation</h5>
-                </div>
-                <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.7s">
-                    <div class="d-flex align-items-center justify-content-between mb-2">
-                        <div class="d-flex align-items-center justify-content-center bg-light"
-                             style="width: 60px; height: 60px;">
-                            <i class="fa fa-headphones fa-2x text-primary"></i>
-                        </div>
-                        <h1 class="display-1 text-light mb-0">04</h1>
-                    </div>
-                    <h5>Customer Support</h5>
+                    {% endfor %}
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Feature Start -->
-
-
-
-    <!-- About Start -->
-    <div class="container-fluid bg-light overflow-hidden my-5 px-lg-0">
-        <div class="container about px-lg-0">
-            <div class="row g-0 mx-lg-0">
-                <div class="col-lg-6 ps-lg-0" style="min-height: 400px;">
-                    <div class="position-relative h-100">
-                        <img class="position-absolute img-fluid w-100 h-100" src="{% static '' %}img/about.jpg"
-                             style="object-fit: cover;" alt="">
+        <!-- Service End -->
+    {% endif %}
+    {% if about.stats_items %}
+        <div class="container-fluid p-2" style="background: #353535">
+            <div class="row g-5 py-5">
+                {% for stats in about.stats_items.all %}
+                    <div class="col-12 col-md-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.1s">
+                        <h1 class="display-5 text-white" data-toggle="counter-up">{{ stats.amount }}</h1>
+                        <span class="fs-5 fw-semi-bold text-white">{{ stats.name }}</span>
                     </div>
-                </div>
-                <div class="col-lg-6 about-text py-5 wow fadeIn"
-                     data-wow-delay="0.5s">
-                    <div class="p-lg-5 pe-lg-0">
-                        <div class="section-title text-start">
-                            <h1 class="display-5 mb-4">About Us</h1>
-                        </div>
-                        <p class="mb-4 pb-2">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam
-                            amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo erat
-                            amet</p>
-                        <div class="row g-4 mb-4 pb-2">
-                            <div class="col-sm-6 wow fadeIn" data-wow-delay="0.1s">
-                                <div class="d-flex align-items-center">
-                                    <div class="d-flex flex-shrink-0 align-items-center justify-content-center bg-white"
-                                         style="width: 60px; height: 60px;">
-                                        <i class="fa fa-users fa-2x text-primary"></i>
-                                    </div>
-                                    <div class="ms-3">
-                                        <h2 class="text-primary mb-1" data-toggle="counter-up">1234</h2>
-                                        <p class="fw-medium mb-0">Happy Clients</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 wow fadeIn" data-wow-delay="0.3s">
-                                <div class="d-flex align-items-center">
-                                    <div class="d-flex flex-shrink-0 align-items-center justify-content-center bg-white"
-                                         style="width: 60px; height: 60px;">
-                                        <i class="fa fa-check fa-2x text-primary"></i>
-                                    </div>
-                                    <div class="ms-3">
-                                        <h2 class="text-primary mb-1" data-toggle="counter-up">1234</h2>
-                                        <p class="fw-medium mb-0">Projects Done</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="" class="btn btn-primary py-3 px-5">Explore More</a>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
-    </div>
-    <!-- About End -->
+    {% endif %}
 
-
-    <!-- Service Start -->
-    <div class="container-xxl py-5">
-        <div class="container">
-            <div class="section-title text-center">
-                <h1 class="display-5 mb-5">Our Services</h1>
-            </div>
-            <div class="row g-4">
-                <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="service-item">
-                        <div class="overflow-hidden">
-                            <img class="img-fluid" src="{% static 'img/service-1.jpg' %}" alt="">
-                        </div>
-                        <div class="p-4 text-center border border-5 border-light border-top-0">
-                            <h4 class="mb-3">General Carpentry</h4>
-                            <p>Stet stet justo dolor sed duo. Ut clita sea sit ipsum diam lorem diam.</p>
-                            <a class="fw-medium" href="">Read More<i class="fa fa-arrow-right ms-2"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="service-item">
-                        <div class="overflow-hidden">
-                            <img class="img-fluid" src="{% static 'img/service-2.jpg' %}" alt="">
-                        </div>
-                        <div class="p-4 text-center border border-5 border-light border-top-0">
-                            <h4 class="mb-3">Furniture Manufacturing</h4>
-                            <p>Stet stet justo dolor sed duo. Ut clita sea sit ipsum diam lorem diam.</p>
-                            <a class="fw-medium" href="">Read More<i class="fa fa-arrow-right ms-2"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="service-item">
-                        <div class="overflow-hidden">
-                            <img class="img-fluid" src="{% static 'img/service-3.jpg' %}" alt="">
-                        </div>
-                        <div class="p-4 text-center border border-5 border-light border-top-0">
-                            <h4 class="mb-3">Furniture Remodeling</h4>
-                            <p>Stet stet justo dolor sed duo. Ut clita sea sit ipsum diam lorem diam.</p>
-                            <a class="fw-medium" href="">Read More<i class="fa fa-arrow-right ms-2"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="service-item">
-                        <div class="overflow-hidden">
-                            <img class="img-fluid" src="{% static 'img/service-4.jpg' %}" alt="">
-                        </div>
-                        <div class="p-4 text-center border border-5 border-light border-top-0">
-                            <h4 class="mb-3">Wooden Floor</h4>
-                            <p>Stet stet justo dolor sed duo. Ut clita sea sit ipsum diam lorem diam.</p>
-                            <a class="fw-medium" href="">Read More<i class="fa fa-arrow-right ms-2"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="service-item">
-                        <div class="overflow-hidden">
-                            <img class="img-fluid" src="{% static 'img/service-5.jpg' %}" alt="">
-                        </div>
-                        <div class="p-4 text-center border border-5 border-light border-top-0">
-                            <h4 class="mb-3">Wooden Furniture</h4>
-                            <p>Stet stet justo dolor sed duo. Ut clita sea sit ipsum diam lorem diam.</p>
-                            <a class="fw-medium" href="">Read More<i class="fa fa-arrow-right ms-2"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="service-item">
-                        <div class="overflow-hidden">
-                            <img class="img-fluid" src="{% static 'img/service-6.jpg' %}" alt="">
-                        </div>
-                        <div class="p-4 text-center border border-5 border-light border-top-0">
-                            <h4 class="mb-3">Custom Work</h4>
-                            <p>Stet stet justo dolor sed duo. Ut clita sea sit ipsum diam lorem diam.</p>
-                            <a class="fw-medium" href="">Read More<i class="fa fa-arrow-right ms-2"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Service End -->
-
-
-    <!-- Feature Start -->
-    <div class="container-fluid bg-light overflow-hidden my-5 px-lg-0">
-        <div class="container feature px-lg-0">
-            <div class="row g-0 mx-lg-0">
-                <div class="col-lg-6 feature-text py-5 wow fadeIn" data-wow-delay="0.5s">
-                    <div class="p-lg-5 ps-lg-0">
-                        <div class="section-title text-start">
-                            <h1 class="display-5 mb-4">Why Choose Us</h1>
-                        </div>
-                        <p class="mb-4 pb-2">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam
-                            amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo erat
-                            amet</p>
-                        <div class="row g-4">
-                            <div class="col-6">
-                                <div class="d-flex align-items-center">
-                                    <div class="d-flex flex-shrink-0 align-items-center justify-content-center bg-white"
-                                         style="width: 60px; height: 60px;">
-                                        <i class="fa fa-check fa-2x text-primary"></i>
-                                    </div>
-                                    <div class="ms-4">
-                                        <p class="mb-2">Quality</p>
-                                        <h5 class="mb-0">Services</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="d-flex align-items-center">
-                                    <div class="d-flex flex-shrink-0 align-items-center justify-content-center bg-white"
-                                         style="width: 60px; height: 60px;">
-                                        <i class="fa fa-user-check fa-2x text-primary"></i>
-                                    </div>
-                                    <div class="ms-4">
-                                        <p class="mb-2">Creative</p>
-                                        <h5 class="mb-0">Designers</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="d-flex align-items-center">
-                                    <div class="d-flex flex-shrink-0 align-items-center justify-content-center bg-white"
-                                         style="width: 60px; height: 60px;">
-                                        <i class="fa fa-drafting-compass fa-2x text-primary"></i>
-                                    </div>
-                                    <div class="ms-4">
-                                        <p class="mb-2">Free</p>
-                                        <h5 class="mb-0">Consultation</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="d-flex align-items-center">
-                                    <div class="d-flex flex-shrink-0 align-items-center justify-content-center bg-white"
-                                         style="width: 60px; height: 60px;">
-                                        <i class="fa fa-headphones fa-2x text-primary"></i>
-                                    </div>
-                                    <div class="ms-4">
-                                        <p class="mb-2">Customer</p>
-                                        <h5 class="mb-0">Support</h5>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 pe-lg-0" style="min-height: 400px;">
-                    <div class="position-relative h-100">
-                        <img class="position-absolute img-fluid w-100 h-100" src="{% static 'img/feature.jpg' %}"
-                             style="object-fit: cover;" alt="">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Feature End -->
-
-
-    <!-- Projects Start -->
     <div class="container-xxl py-5">
         <div class="container">
             <div class="section-title text-center">
@@ -419,11 +216,28 @@
             </div>
         </div>
     </div>
-    <!-- Projects End -->
-    {#    <div transition-style class="--in-custom">#}
-    {#        A custom transitioned element#}
-    {#    </div>#}
-    <!-- Quote Start -->
+
+    <div class="container-fluid position-relative py-5 my-5">
+        <img class="d-none d-lg-block position-absolute top-0 start-0 mt-10"
+             src="{% static 'img/green-dot-left-bars.svg' %}" alt="">
+        <img class="d-none d-lg-block position-absolute top-0 end-0 mt-36"
+             src="{% static 'img/yellow-dot-right-shield.svg' %}" alt="">
+        <div class="row justify-content-center text-center">
+            <div class="col-lg-6">
+                <h4 class="display-5 mb-2">Suscríbete</h4>
+                <p class="fs-5">Suscribase para recibir información actualizada.</p>
+                <form action="." method="post" class="bg-white">
+                    <div class="position-relative w-100">
+                        <input class="form-control bg-light border-light w-100 py-3 ps-4 pe-5" type="text"
+                               placeholder="Correo">
+                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">
+                            Suscribirse
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <div class="container-fluid bg-light overflow-hidden my-5 px-lg-0">
         <div class="container quote px-lg-0">
             <div class="row g-0 mx-lg-0">
@@ -476,197 +290,129 @@
             </div>
         </div>
     </div>
-    <!-- Quote End -->
-    {#    <div class="container-fluid h-100">#}
-    {#        <div class="d-flex gap-5">#}
-    {#            <div class="w-75">#}
-    {#                <div id="map"></div>#}
-    {#            </div>#}
-    {#            <div class="w-25">#}
-    {#                <p>asd</p>#}
+
+
+    {#    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">#}
+    {#        <div class="modal-dialog modal-dialog-scrollable">#}
+    {#            <div class="modal-content">#}
+    {#                <div class="modal-header">#}
+    {#                    <h5 class="modal-title" id="modalTitle">Título del Modal</h5>#}
+    {#                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>#}
+    {#                </div>#}
+    {#                <div class="modal-body" id="modalBody">#}
+    {#                    Información del modal.#}
+    {#                </div>#}
+    {#                <div class="modal-footer">#}
+    {#                    <div class="text-center">#}
+    {#                        <a href="#" id="modalLink" class="btn btn-primary">Ver más detalles</a>#}
+    {#                    </div>#}
+    {#                </div>#}
     {#            </div>#}
     {#        </div>#}
     {#    </div>#}
-    <div class="container-fluid bg-light overflow-hidden px-lg-0" style="margin: 6rem 0;">
-        <div class="container contact px-lg-0">
-            <div class="row g-0 mx-lg-0">
-                <div class="col-lg-6 contact-text py-5 wow fadeIn" data-wow-delay="0.5s"
-                     style="visibility: visible; animation-delay: 0.5s; animation-name: fadeIn;">
-                    <div class="p-lg-5 ps-lg-0">
-                        <div class="section-title text-start">
-                            <h1 class="display-5 mb-4">Contact Us</h1>
-                        </div>
-                        <p class="mb-4">The contact form is currently inactive. Get a functional and working contact
-                            form with Ajax &amp; PHP in a few minutes. Just copy and paste the files, add a little code
-                            and you're done. <a href="https://htmlcodex.com/contact-form">Download Now</a>.</p>
-                        <form>
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control" id="name" placeholder="Your Name">
-                                        <label for="name">Your Name</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <input type="email" class="form-control" id="email" placeholder="Your Email">
-                                        <label for="email">Your Email</label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control" id="subject" placeholder="Subject">
-                                        <label for="subject">Subject</label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-floating">
-                                        <textarea class="form-control" placeholder="Leave a message here" id="message"
-                                                  style="height: 100px"></textarea>
-                                        <label for="message">Message</label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <button class="btn btn-primary w-100 py-3" type="submit">Send Message</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="col-lg-6 pe-lg-0" style="min-height: 400px;">
-                    <div class="position-relative h-100">
-                        <div id="map"></div>
-                        {#                        <iframe class="position-absolute w-100 h-100" style="object-fit: cover;" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3001156.4288297426!2d-78.01371936852176!3d42.72876761954724!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4ccc4bf0f123a5a9%3A0xddcfc6c1de189567!2sNew%20York%2C%20USA!5e0!3m2!1sen!2sbd!4v1603794290143!5m2!1sen!2sbd" frameborder="0" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>#}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-
-    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalTitle">Título del Modal</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" id="modalBody">
-                    Información del modal.
-                </div>
-                <div class="modal-footer">
-                    <div class="text-center">
-                        <a href="#" id="modalLink" class="btn btn-primary">Ver más detalles</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     {% comment %}
 Delete the line below if you're just getting started and want to remove the welcome screen!
 {% endcomment %}
-    
+
 {% endblock content %}
 {% block extra_js %}
-    <script src="{% static 'lib/highmap/highmaps.js' %}"></script>
-    <script src="{% static 'lib/highmap/exporting.js' %}"></script>
-    <script src="{% static 'lib/highmap/accessibility.js' %}"></script>
-
-    <script>
-        (async () => {
-
-            const topology = await fetch(
-                'https://code.highcharts.com/mapdata/countries/us/us-fl-all.topo.json'
-            ).then(response => response.json());
-
-            // Prepare demo data. The data is joined to map using value of 'hc-key'
-            // property by default. See API docs for 'joinBy' for more info on linking
-            // data and map.
-            const data = [
-                ['us-fl-131', 10], ['us-fl-087', 11], ['us-fl-053', 12],
-                ['us-fl-051', 13], ['us-fl-043', 14], ['us-fl-086', 15],
-                ['us-fl-037', 16], ['us-fl-097', 17], ['us-fl-093', 18],
-                ['us-fl-071', 19], ['us-fl-111', 20], ['us-fl-061', 21],
-                ['us-fl-085', 22], ['us-fl-021', 23], ['us-fl-049', 24],
-                ['us-fl-055', 25], ['us-fl-027', 26], ['us-fl-015', 27],
-                ['us-fl-009', 28], ['us-fl-095', 29], ['us-fl-129', 30],
-                ['us-fl-133', 31], ['us-fl-005', 32], ['us-fl-007', 33],
-                ['us-fl-107', 34], ['us-fl-031', 35], ['us-fl-003', 36],
-                ['us-fl-019', 37], ['us-fl-063', 38], ['us-fl-103', 39],
-                ['us-fl-057', 40], ['us-fl-035', 41], ['us-fl-045', 42],
-                ['us-fl-065', 43], ['us-fl-081', 44], ['us-fl-101', 45],
-                ['us-fl-115', 46], ['us-fl-073', 47], ['us-fl-033', 48],
-                ['us-fl-113', 49], ['us-fl-011', 50], ['us-fl-089', 51],
-                ['us-fl-077', 52], ['us-fl-105', 53], ['us-fl-041', 54],
-                ['us-fl-067', 55], ['us-fl-127', 56], ['us-fl-121', 57],
-                ['us-fl-083', 58], ['us-fl-017', 59], ['us-fl-075', 60],
-                ['us-fl-059', 61], ['us-fl-079', 62], ['us-fl-029', 63],
-                ['us-fl-117', 64], ['us-fl-069', 65], ['us-fl-091', 66],
-                ['us-fl-001', 67], ['us-fl-125', 68], ['us-fl-013', 69],
-                ['us-fl-123', 70], ['us-fl-119', 71], ['us-fl-109', 72],
-                ['us-fl-099', 73], ['us-fl-047', 74], ['us-fl-023', 75],
-                ['us-fl-039', 76]
-            ];
-
-            // Create the chart
-            Highcharts.mapChart('map', {
-                chart: {
-                    map: topology,
-                    height: 700
-                },
-
-                title: {
-                    text: 'Operamos en la Florida'
-                },
-
-                mapNavigation: {
-                    enabled: true,
-                    buttonOptions: {
-                        verticalAlign: 'bottom'
-                    }
-                },
-
-                colorAxis: {
-                    min: 0,
-                },
-
-                series: [{
-                    data: data,
-                    name: 'Clientes',
-                    color: '#d94d3f',
-                    states: {
-                        hover: {
-                            color: '#d94d3f'
-                        }
-                    },
-                    dataLabels: {
-                        enabled: true,
-                        format: '{point.name}'
-                    },
-                    point: {
-                        events: {
-                            click: function () {
-                                mostrarResumenProvincia(this.detalle);
-                            }
-                        }
-                    }
-                }]
-            });
-
-        })();
-
-        function mostrarResumenProvincia(detalle) {
-            const modalTitle = document.getElementById('modalTitle');
-            const modalBody = document.getElementById('modalBody');
-            const modalLink = document.getElementById('modalLink');
-
-            modalTitle.textContent = `Resumen sobre`;
-            modalBody.innerHTML = `Hola`;
-            modalLink.href = `#seccion_acciones`;
-
-            $('#infoModal').modal('show');
-        }
-    </script>
+    {#    <script src="{% static 'lib/highmap/highmaps.js' %}"></script>#}
+    {#    <script src="{% static 'lib/highmap/exporting.js' %}"></script>#}
+    {#    <script src="{% static 'lib/highmap/accessibility.js' %}"></script>#}
+    {##}
+    {#    <script>#}
+    {#        (async () => {#}
+    {##}
+    {#            const topology = await fetch(#}
+    {#                'https://code.highcharts.com/mapdata/countries/us/us-fl-all.topo.json'#}
+    {#            ).then(response => response.json());#}
+    {##}
+    {#            // Prepare demo data. The data is joined to map using value of 'hc-key'#}
+    {#            // property by default. See API docs for 'joinBy' for more info on linking#}
+    {#            // data and map.#}
+    {#            const data = [#}
+    {#                ['us-fl-131', 10], ['us-fl-087', 11], ['us-fl-053', 12],#}
+    {#                ['us-fl-051', 13], ['us-fl-043', 14], ['us-fl-086', 15],#}
+    {#                ['us-fl-037', 16], ['us-fl-097', 17], ['us-fl-093', 18],#}
+    {#                ['us-fl-071', 19], ['us-fl-111', 20], ['us-fl-061', 21],#}
+    {#                ['us-fl-085', 22], ['us-fl-021', 23], ['us-fl-049', 24],#}
+    {#                ['us-fl-055', 25], ['us-fl-027', 26], ['us-fl-015', 27],#}
+    {#                ['us-fl-009', 28], ['us-fl-095', 29], ['us-fl-129', 30],#}
+    {#                ['us-fl-133', 31], ['us-fl-005', 32], ['us-fl-007', 33],#}
+    {#                ['us-fl-107', 34], ['us-fl-031', 35], ['us-fl-003', 36],#}
+    {#                ['us-fl-019', 37], ['us-fl-063', 38], ['us-fl-103', 39],#}
+    {#                ['us-fl-057', 40], ['us-fl-035', 41], ['us-fl-045', 42],#}
+    {#                ['us-fl-065', 43], ['us-fl-081', 44], ['us-fl-101', 45],#}
+    {#                ['us-fl-115', 46], ['us-fl-073', 47], ['us-fl-033', 48],#}
+    {#                ['us-fl-113', 49], ['us-fl-011', 50], ['us-fl-089', 51],#}
+    {#                ['us-fl-077', 52], ['us-fl-105', 53], ['us-fl-041', 54],#}
+    {#                ['us-fl-067', 55], ['us-fl-127', 56], ['us-fl-121', 57],#}
+    {#                ['us-fl-083', 58], ['us-fl-017', 59], ['us-fl-075', 60],#}
+    {#                ['us-fl-059', 61], ['us-fl-079', 62], ['us-fl-029', 63],#}
+    {#                ['us-fl-117', 64], ['us-fl-069', 65], ['us-fl-091', 66],#}
+    {#                ['us-fl-001', 67], ['us-fl-125', 68], ['us-fl-013', 69],#}
+    {#                ['us-fl-123', 70], ['us-fl-119', 71], ['us-fl-109', 72],#}
+    {#                ['us-fl-099', 73], ['us-fl-047', 74], ['us-fl-023', 75],#}
+    {#                ['us-fl-039', 76]#}
+    {#            ];#}
+    {##}
+    {#            // Create the chart#}
+    {#            Highcharts.mapChart('map', {#}
+    {#                chart: {#}
+    {#                    map: topology,#}
+    {#                    height: 700#}
+    {#                },#}
+    {##}
+    {#                title: {#}
+    {#                    text: 'Operamos en la Florida'#}
+    {#                },#}
+    {##}
+    {#                mapNavigation: {#}
+    {#                    enabled: true,#}
+    {#                    buttonOptions: {#}
+    {#                        verticalAlign: 'bottom'#}
+    {#                    }#}
+    {#                },#}
+    {##}
+    {#                colorAxis: {#}
+    {#                    min: 0,#}
+    {#                },#}
+    {##}
+    {#                series: [{#}
+    {#                    data: data,#}
+    {#                    name: 'Clientes',#}
+    {#                    color: '#d94d3f',#}
+    {#                    states: {#}
+    {#                        hover: {#}
+    {#                            color: '#d94d3f'#}
+    {#                        }#}
+    {#                    },#}
+    {#                    dataLabels: {#}
+    {#                        enabled: true,#}
+    {#                        format: '{point.name}'#}
+    {#                    },#}
+    {#                    point: {#}
+    {#                        events: {#}
+    {#                            click: function () {#}
+    {#                                mostrarResumenProvincia(this.detalle);#}
+    {#                            }#}
+    {#                        }#}
+    {#                    }#}
+    {#                }]#}
+    {#            });#}
+    {##}
+    {#        })();#}
+    {##}
+    {#        function mostrarResumenProvincia(detalle) {#}
+    {#            const modalTitle = document.getElementById('modalTitle');#}
+    {#            const modalBody = document.getElementById('modalBody');#}
+    {#            const modalLink = document.getElementById('modalLink');#}
+    {##}
+    {#            modalTitle.textContent = `Resumen sobre`;#}
+    {#            modalBody.innerHTML = `Hola`;#}
+    {#            modalLink.href = `#seccion_acciones`;#}
+    {##}
+    {#            $('#infoModal').modal('show');#}
+    {#        }#}
+    {#    </script>#}
 {% endblock %}

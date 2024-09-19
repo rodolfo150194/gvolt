@@ -5,6 +5,8 @@ from django.db import models
 from modelcluster.models import ClusterableModel
 from wagtail import blocks
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel, InlinePanel
+from wagtail.contrib.table_block.blocks import TableBlock
+from wagtail.contrib.typed_table_block.blocks import TypedTableBlock
 from wagtail.documents.blocks import DocumentChooserBlock
 from wagtail.images.blocks import ImageChooserBlock
 
@@ -20,6 +22,7 @@ class TextImageTopBlock(blocks.StructBlock):
         icon = "image"
         label = "Texto e Imagen arriba "
 
+
 class TextImageBottomBlock(blocks.StructBlock):
     image = ImageChooserBlock(required=True, help_text="Imagen")
     texto_primario = blocks.CharBlock(required=True, help_text="Texto primario")
@@ -29,6 +32,7 @@ class TextImageBottomBlock(blocks.StructBlock):
         template = "blocks/text_image_bottom.html"
         icon = "image"
         label = "Texto e Imagen debajo "
+
 
 class TextPrimarySecondaryBlock(blocks.StructBlock):
     texto_primario = blocks.CharBlock(required=True, help_text="Texto primario")
@@ -41,7 +45,6 @@ class TextPrimarySecondaryBlock(blocks.StructBlock):
 
 
 class SimpleTextBlock(blocks.CharBlock):
-
     class Meta:
         icon = "image"
         label = "Texto Simple"
@@ -126,6 +129,7 @@ class DocumentBlock(blocks.StructBlock):
         ('nombre', blocks.CharBlock(required=True, help_text="Nombre del documento")),
         ('documento', DocumentChooserBlock(required=True, help_text="Documento")),
     ]))
+
     class Meta:
         template = 'blocks/document.html'
         icon = 'doc-full'
@@ -157,7 +161,6 @@ class CounterBlock(blocks.StructBlock):
         label = "Contador"
 
 
-
 class TabBlock(blocks.StructBlock):
     title = blocks.CharBlock(required=True, help_text="Título de la pestaña")
     content = blocks.StreamBlock([
@@ -180,3 +183,10 @@ class TabBlock(blocks.StructBlock):
     class Meta:
         icon = "form"
         label = "Pestaña"
+
+
+class TablaCustomBlock(TypedTableBlock):
+    class Meta:
+        icon = 'table'
+        label = 'Table'
+        template = 'blocks/custom_table_block.html'

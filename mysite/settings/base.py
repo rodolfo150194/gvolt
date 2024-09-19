@@ -24,30 +24,36 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 ALLOWED_HOSTS = [".vercel.app"]
 
 # Application definition
+THIRD_PARTY_APPS = [
+    "widget_tweaks",
+]
 
 INSTALLED_APPS = [
-    "home",
-    "search",
-    "wagtail.contrib.forms",
-    "wagtail.contrib.redirects",
-    "wagtail.embeds",
-    "wagtail.sites",
-    "wagtail.users",
-    "wagtail.snippets",
-    "wagtail.documents",
-    "wagtail.images",
-    "wagtail.search",
-    "wagtail.admin",
-    "wagtail",
-    "modelcluster",
-    "taggit",
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
-]
+                     "home",
+                     "search",
+                     "wagtail.contrib.forms",
+                     "wagtail.contrib.redirects",
+                     "wagtail.embeds",
+                     "wagtail.sites",
+                     "wagtail.users",
+                     "wagtail.snippets",
+                     "wagtail.documents",
+                     "wagtail.images",
+                     "wagtail.search",
+                     "wagtail.admin",
+                     "wagtail",
+                     "modelcluster",
+                     "taggit",
+                     "django.contrib.admin",
+                     "django.contrib.auth",
+                     "django.contrib.contenttypes",
+                     "django.contrib.sessions",
+                     "django.contrib.messages",
+                     "django.contrib.staticfiles",
+                     "wagtail.contrib.table_block",
+                     "wagtail.contrib.typed_table_block",
+                     "blocks"
+                 ] + THIRD_PARTY_APPS
 
 MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -86,18 +92,18 @@ WSGI_APPLICATION = "mysite.wsgi.application"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    # "default": {
-    #     "ENGINE": "django.db.backends.sqlite3",
-    #     "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-    # },
     "default": {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'verceldb',
-        'USER': 'default',
-        'PASSWORD': 'ot0re8LlshYB',
-        'HOST': 'ep-falling-cell-a4xqgpk6-pooler.us-east-1.aws.neon.tech',
-        'PORT': '5432',
-    }
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+    },
+    # "default": {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': 'verceldb',
+    #     'USER': 'default',
+    #     'PASSWORD': 'ot0re8LlshYB',
+    #     'HOST': 'ep-falling-cell-a4xqgpk6-pooler.us-east-1.aws.neon.tech',
+    #     'PORT': '5432',
+    # }
 }
 
 # Password validation

@@ -1,0 +1,25 @@
+{% load wagtailcore_tags %}
+
+{#    {% for ante in value.antecedentes.all %}#}
+        <!-- start experience section-->
+        <div class="timeline">
+            <div class="icon"></div>
+            <div class="date-content">
+                <div class="date-outer">
+                    <span class="date">
+                        <span class="month">{{ value.start_date | date:"F" }}</span>
+                        <span class="year">{{ value.start_date.year }}</span>
+                    </span>
+                </div>
+            </div>
+            <div class="timeline-content">
+                <h5 class="title">{{ value.title }}</h5>
+                <p class="description">
+                    {{ value.description | richtext }}
+                </p>
+            </div>
+        </div>
+        <!-- end experience section-->
+{#    {% endfor %}#}
+
+</div>

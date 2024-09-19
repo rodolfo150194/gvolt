@@ -1,0 +1,12 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+<div class="row g-5">
+    <div class="col-lg-8" data-wow-delay="0.1s">
+        <h4 class="mb-4">{{ value.texto_primario }}</h4>
+        <p class="mb-4">{{ value.texto_secundario | richtext }}</p>
+    </div>
+    <div class="col-lg-4">
+        {% image value.image original as img_value %}
+        <img class="img-fluid rounded" src="{{ img_value.url }}" alt="">
+    </div>
+</div>

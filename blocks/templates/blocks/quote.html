@@ -1,0 +1,8 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+<div class="d-flex p-4 mt-5 bg-light">
+    <div class="desc align-self-md-center">
+        <h4>{{ value.author }}</h4>
+        <p>{{ value.cita | richtext }}</p>
+    </div>
+</div>

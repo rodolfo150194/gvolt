@@ -1,0 +1,24 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+<div class="row g-5 my-5">
+
+    {% for faq in value.items %}
+        <div class="col-lg-12 col-md-6 wow fadeInUp" data-wow-delay="0.1s"
+             style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInUp;">
+            <div class="card rounded d-flex h-100">
+                <div class="service-text rounded p-5">
+                    <div class="d-flex align-items-center gap-1">
+                        <div>
+                            <a class="btn btn-square btn-outline-success rounded-circle me-2"
+                               href=""><i class="fa fa-info"></i>
+                            </a>
+                        </div>
+                        <div class="align-self-center">
+                            <h4 class="mb-3">{{ faq.title }}</h4>
+                        </div>
+                    </div>
+                    <p class="mb-4">{{ faq.content | richtext }}</p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

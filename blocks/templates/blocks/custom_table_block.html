@@ -1,0 +1,22 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+{% if value.caption %}
+    <h4 class="text-center">{{ value.caption }}</h4>
+{% endif %}
+<table class="table table-bordered">
+    <thead>
+    <tr class="bg-primary text-white">
+        {% for col in value.columns %}
+            <th scope="col">{{ col.heading }}</th>
+        {% endfor %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in value.rows %}
+        <tr>
+            {% for block in row %}
+                <td>{% include_block block %}</td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

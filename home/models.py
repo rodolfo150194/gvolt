@@ -1,14 +1,20 @@
 from django.db import models
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels.field_panel import FieldPanel
-from wagtail.admin.panels.group import MultiFieldPanel
+from wagtail.admin.panels.group import MultiFieldPanel, FieldRowPanel
 from wagtail.admin.panels.inline_panel import InlinePanel
+from wagtail.blocks import ChoiceBlock
+from wagtail.contrib.forms.models import AbstractFormField, AbstractEmailForm, AbstractFormSubmission
+from wagtail.contrib.forms.panels import FormSubmissionsPanel
+from wagtail.contrib.typed_table_block.blocks import TypedTableBlock
 from wagtail.fields import RichTextField, StreamField
 
 from wagtail.models import Page, Orderable
 from wagtail.snippets.models import register_snippet
+from wagtail_modeladmin.options import ModelAdmin
 
 from blocks.models import *
+from blocks.utils import default_table_block_options
 
 
 class HomePage(Page):
@@ -16,11 +22,9 @@ class HomePage(Page):
     logo = models.ForeignKey(
         'wagtailimages.Image', on_delete=models.SET_NULL, null=True, blank=True, related_name='+'
     )
-    body = RichTextField(blank=True)
 
     content_panels = Page.content_panels + [
         MultiFieldPanel([
-            FieldPanel('body'),
             FieldPanel('logo'),
         ], heading="Información General"),
         MultiFieldPanel([
@@ -32,20 +36,37 @@ class HomePage(Page):
     def get_context(self, request):
         context = super().get_context(request)
         about = AboutPage.objects.live().first()
-
+        services = ServicesPage.objects.live()
         context['about'] = about
+        context['services'] = services
         return context
+
+
+class Estadistica(models.Model):
+    name = models.CharField(max_length=255)
+    amount = models.IntegerField()
+    page = ParentalKey('AboutPage', related_name='stats_items', on_delete=models.CASCADE)
+
+    panels = [
+        FieldPanel('name'),
+        FieldPanel('amount'),
+    ]
+
+    def __str__(self):
+        return self.nombre
 
 
 class AboutPage(Page):
     template = 'about/about_page.html'
     max_count = 1
-    intro = models.CharField(max_length=255, blank=True, verbose_name='Texto primario')
-    texto_secundario = RichTextField(verbose_name='Texto secundario', null=True, blank=True)
+    intro_first = models.CharField(max_length=255, blank=True, verbose_name='Primer Texto')
+    intro_second = models.CharField(max_length=255, blank=True, verbose_name='Segundo Texto')
+    description_short = RichTextField(blank=True)
+    body = RichTextField(blank=True)
     phone = models.CharField(max_length=20, blank=True)
     address = models.CharField(max_length=255, blank=True, null=True)
     email = models.EmailField(blank=True)
-    licencia = models.CharField(max_length=255,blank=True, null=True)
+    licence = models.CharField(max_length=255, blank=True, null=True)
     image = models.ForeignKey(
         'wagtailimages.Image',
         null=True,
@@ -54,7 +75,7 @@ class AboutPage(Page):
         related_name='+'
     )
 
-    contenido_extra = StreamField([
+    content_extra = StreamField([
         ('texto_imagen_arriba', TextImageTopBlock()),
         ('texto_imagen_abajo', TextImageBottomBlock()),
         ('texto_imagen_derecha', TextImageRightBlock()),
@@ -72,10 +93,11 @@ class AboutPage(Page):
         # Puedes agregar más bloques aquí
     ], null=True, blank=True)
 
-
     content_panels = Page.content_panels + [
-        FieldPanel('intro'),
-        FieldPanel('texto_secundario'),
+        FieldPanel('intro_first'),
+        FieldPanel('intro_second'),
+        FieldPanel('description_short'),
+        FieldPanel('body'),
         FieldPanel('image'),
         FieldPanel('phone'),
         FieldPanel('address'),
@@ -83,11 +105,37 @@ class AboutPage(Page):
         MultiFieldPanel([
             InlinePanel('social_media_links', label="Enlaces de Redes Sociales"),
         ], heading="Redes Sociales"),
-        FieldPanel('contenido_extra', classname="full"),
+        InlinePanel('fragments_information', label="Fragmentos de Información"),
+        InlinePanel('stats_items', label="Estadisticas"),
+        FieldPanel('content_extra', classname="full"),
     ]
 
     class Meta:
         verbose_name = "Información de la empresa"
+
+
+class FragmentoInformacion(Orderable):
+    page = ParentalKey(AboutPage, related_name='fragments_information', on_delete=models.CASCADE)
+    order = models.IntegerField(verbose_name='Orden')
+    name = models.CharField(max_length=255, verbose_name='Nombre')
+    descripcion = RichTextField(max_length=1000, verbose_name='Descripción')
+    imagen = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+
+    panels = [
+        FieldPanel('order'),
+        FieldPanel('name'),
+        FieldPanel('descripcion'),
+        FieldPanel('imagen'),
+    ]
+
+    def __str__(self):
+        return self.name
 
 
 @register_snippet
@@ -129,11 +177,13 @@ class CarouselItem(models.Model):
     image = models.ForeignKey(
         'wagtailimages.Image', on_delete=models.CASCADE, related_name='+', verbose_name='Imagen'
     )
-    caption = models.CharField(max_length=250, blank=True, verbose_name='Texto alternativo')
+    caption = models.CharField(max_length=250, blank=True, verbose_name='Texto primario')
+    caption_2 = models.CharField(max_length=250, blank=True, verbose_name='Texto alternativo')
 
     panels = [
         FieldPanel('image'),
         FieldPanel('caption'),
+        FieldPanel('caption_2'),
     ]
 
     def __str__(self):
@@ -145,17 +195,18 @@ class CarouselItem(models.Model):
 
 # [Preguntas y Respuestas] - Inicio
 class FAQ(models.Model):
-    pregunta = models.CharField(max_length=255)
-    respuesta = RichTextField()
+    ask = models.CharField(max_length=255)
+    answer = RichTextField()
     page = ParentalKey('FaqPage', related_name='faq_items', on_delete=models.CASCADE)
 
     panels = [
-        FieldPanel('pregunta'),
-        FieldPanel('respuesta'),
+        FieldPanel('ask'),
+        FieldPanel('answer'),
     ]
 
     def __str__(self):
-        return self.pregunta
+        return self.ask
+
 
 class FaqPage(Page):
     max_count = 1
@@ -165,38 +216,11 @@ class FaqPage(Page):
     ]
 
     class Meta:
-        verbose_name = "Preguntas Frecuentes"
+        verbose_name = "Frequently Asked Questions"
+
 
 # [Preguntas y Respuestas] - Fin
 
-
-# [Estadistica importante] - Inicio
-class Estadistica(models.Model):
-    nombre = models.CharField(max_length=255)
-    cantidad = models.IntegerField()
-    page = ParentalKey('EstadisticaPage', related_name='stats_items', on_delete=models.CASCADE)
-
-    panels = [
-        FieldPanel('nombre'),
-        FieldPanel('cantidad'),
-    ]
-
-    def __str__(self):
-        return self.nombre
-
-
-class EstadisticaPage(Page):
-    max_count = 1
-
-    content_panels = Page.content_panels + [
-        InlinePanel('stats_items', label="Estadisticas"),
-    ]
-
-    class Meta:
-        verbose_name = "Estadisticas"
-
-
-# [Estadistica Importante] - Fin
 
 # [Partner] - Inicio
 @register_snippet
@@ -204,17 +228,19 @@ class Partner(models.Model):
     image = models.ForeignKey(
         'wagtailimages.Image', on_delete=models.CASCADE, related_name='+', verbose_name='Imagen'
     )
-    nombre = models.CharField(max_length=255, blank=True, verbose_name='Nombre')
+    name = models.CharField(max_length=255, blank=True, verbose_name='Nombre')
     url = models.URLField(blank=True, verbose_name='URL del Partner')
 
     panels = [
         FieldPanel('image'),
-        FieldPanel('nombre'),
+        FieldPanel('name'),
         FieldPanel('url'),
     ]
 
     def __str__(self):
-        return self.nombre or "Patrocinadores"
+        return self.name or "Partners"
+
+
 # [Partner] - Fin
 
 
@@ -274,6 +300,7 @@ class GaleriaItem(Orderable):
     def __str__(self):
         return self.titulo
 
+
 # [Galeria] - Fin
 
 
@@ -305,7 +332,6 @@ class CustomPage(Page):
     class Meta:
         verbose_name = "Página personalizada"
 
-
     def get_context(self, request):
         context = super().get_context(request)
         home_page = HomePage.objects.live().first()
@@ -333,6 +359,7 @@ class ServicesPage(Page):
     name = models.CharField(max_length=255)
     order = models.IntegerField(verbose_name='Orden')
     estado = models.BooleanField(default=True)
+    description_short = RichTextField(blank=True)
     description = RichTextField(blank=True)
     icono = models.ForeignKey(
         'wagtailimages.Image',
@@ -363,6 +390,21 @@ class ServicesPage(Page):
         ('estadisticas', CounterBlock()),
         ('documento', DocumentBlock()),
         ('pestannas', TabBlock()),
+        # ('tabla', TableBlock()),
+        ('table', TablaCustomBlock([
+            ('text', blocks.CharBlock()),
+            ('numeric', blocks.FloatBlock()),
+            ('rich_text', blocks.RichTextBlock()),
+            ('image', ImageChooserBlock()),
+            ('country', ChoiceBlock(choices=[
+                ('be', 'Belgium'),
+                ('fr', 'France'),
+                ('de', 'Germany'),
+                ('nl', 'Netherlands'),
+                ('pl', 'Poland'),
+                ('uk', 'United Kingdom'),
+            ])),
+        ]))
     ], null=True, blank=True)
 
     content_panels = Page.content_panels + [
@@ -370,6 +412,7 @@ class ServicesPage(Page):
             FieldPanel('name'),
             FieldPanel('order'),
             FieldPanel('estado'),
+            FieldPanel('description_short'),
             FieldPanel('description'),
             FieldPanel('icono'),
             FieldPanel('image'),
@@ -386,3 +429,35 @@ class ServicesPage(Page):
         about = AboutPage.objects.live().first()
         context['about'] = about
         return context
+
+
+class FormField(AbstractFormField):
+    page = ParentalKey('FormPage', on_delete=models.CASCADE, related_name='form_fields')
+
+
+class FormPage(AbstractEmailForm):
+    template = "form/form_page.html"
+    intro = RichTextField(blank=True)
+    thank_you_text = RichTextField(blank=True)
+
+    content_panels = AbstractEmailForm.content_panels + [
+        FormSubmissionsPanel(),
+        FieldPanel('intro'),
+        InlinePanel('form_fields', label="Form fields"),
+        FieldPanel('thank_you_text'),
+        MultiFieldPanel([
+            FieldRowPanel([
+                FieldPanel('from_address'),
+                FieldPanel('to_address'),
+            ]),
+            FieldPanel('subject'),
+        ], "Email"),
+    ]
+
+    # def process_form_submission(self, form):
+    #     submission = CustomFormSubmission(
+    #         form_data=form.cleaned_data,
+    #         page=self,
+    #     )
+    #     submission.save()
+    #     super().process_form_submission(form)

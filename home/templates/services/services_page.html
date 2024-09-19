@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static wagtailcore_tags wagtailimages_tags %}
-{% block title %}
+{% block title %} {{ page.title }}
 {% endblock %}
 {% block extra_css %}
 {% endblock %}
@@ -19,6 +19,17 @@
     </div>
 {% endblock %}
 {% block content %}
+    <div class="container-fluid px-lg-0">
+        <div class="container px-lg-0">
+            {% for block in page.contenido_extra %}
+                {% if block.block_type == 'tabla' %}
+                    {% include_block value.bound_blocks.table %}
+                {% else %}
+                    {% include_block block %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}
 {% block extra_js %}
 {% endblock %}

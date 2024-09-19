@@ -1,0 +1,11 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+<div class="row g-5">
+    <div class="service-text rounded">
+        <h4 class="mb-3">{{ value.texto_primario }}</h4>
+        <p class="mb-4">{{ value.texto_secundario | richtext }}</p>
+    </div>
+    <div class="service-img rounded">
+        {% image value.image original as img %}
+        <img class="img-fluid" src="{{ img.url }}" alt="">
+    </div>
+</div>

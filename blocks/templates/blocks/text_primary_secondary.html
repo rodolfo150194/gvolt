@@ -1,0 +1,6 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+<div class="row">
+    <h4 class="mb-2">{{ value.texto_primario }}</h4>
+    <p class="mb-4">{{ value.texto_secundario | richtext }}</p>
+</div>

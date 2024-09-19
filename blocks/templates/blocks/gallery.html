@@ -1,0 +1,20 @@
+{% load wagtailimages_tags %}
+
+<section id="clients" class="clients">
+    <div class="text-center" data-aos="zoom-out">
+    <h4 class="mb-5">{{ value.texto }}</h4>
+        <div class="clients-slider swiper" id="swiper_gallery">
+            <div class="swiper-wrapper align-items-center">
+                {% for image in value.images %}
+                    {% image image original as img %}
+
+                    <a href="{{ image.url }}" class="swiper-slide wow fadeInLeft" data-wow-delay="1s">
+                        <img src="{{ img.url }}" title="{{ image.texto }}"
+                             class="img-fluid"
+                             alt="{{ image.texto }}">
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>

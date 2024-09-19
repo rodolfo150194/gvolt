@@ -1,0 +1,17 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+<div class="row g-4 y-5">
+    {% for feat in value.features %}
+        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+            <div class="service-item rounded d-flex h-100">
+                <div class="service-img rounded">
+                    {% image feat.image original as img %}
+                    <img class="img-fluid" src="{{ img.url }}" alt="">
+                </div>
+                <div class="service-text rounded p-5 w-100">
+                    <h4 class="mb-3">{{ feat.title }}</h4>
+                    <p class="mb-4">{{ feat.description | richtext }}</p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
