@@ -138,8 +138,8 @@
         <!-- Service End -->
     {% endif %}
     {% if about.stats_items %}
-        <div class="container-fluid p-2" style="background: #353535">
-            <div class="row g-5 py-5">
+        <div class="container-fluid py-3" style="background: #353535">
+            <div class="row py-5">
                 {% for stats in about.stats_items.all %}
                     <div class="col-12 col-md-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.1s">
                         <h1 class="display-5 text-white" data-toggle="counter-up">{{ stats.amount }}</h1>
