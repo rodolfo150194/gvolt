@@ -1,4 +1,6 @@
+from django.core.mail import EmailMessage
 from django.db import models
+from django.template.loader import render_to_string
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels.field_panel import FieldPanel
 from wagtail.admin.panels.group import MultiFieldPanel, FieldRowPanel
@@ -15,6 +17,8 @@ from wagtail_modeladmin.options import ModelAdmin
 
 from blocks.models import *
 from blocks.utils import default_table_block_options
+from mysite import settings
+from mysite.settings.base import EMAIL_HOST_USER
 
 
 class HomePage(Page):
@@ -76,21 +80,27 @@ class AboutPage(Page):
     )
 
     content_extra = StreamField([
-        ('texto_imagen_arriba', TextImageTopBlock()),
-        ('texto_imagen_abajo', TextImageBottomBlock()),
-        ('texto_imagen_derecha', TextImageRightBlock()),
-        ('texto_imagen_izquierda', TextImageLeftBlock()),
-        ('texto_primario_y_secundario', TextPrimarySecondaryBlock()),
-        ('cita', QuoteBlock()),
-        ('galeria', GalleryBlock()),
-        ('video_embebido', VideoEmbedBlock()),
-        ('boton_mas_accion', CallToActionBlock()),
+        ('simple_text', SimpleTextBlock()),
+        ('rich_text', RichTextBlock()),
+        ('text_image_above', TextImageTopBlock()),
+        ('text_image_below', TextImageBottomBlock()),
+        ('text_image_right', TextImageRightBlock()),
+        ('text_image_left', TextImageLeftBlock()),
+        ('primary_and_secondary_text', TextPrimarySecondaryBlock()),
+        ('quote', QuoteBlock()),
+        ('gallery', GalleryBlock()),
+        ('embed_video', VideoEmbedBlock()),
+        ('call_to_action', CallToActionBlock()),
         ('accordion', AccordionBlock()),
-        ('caracteristica', FeatureListBlock()),
-        ('estadisticas', CounterBlock()),
-        ('documento', DocumentBlock()),
-        ('pestanna', TabBlock()),
-        # Puedes agregar más bloques aquí
+        ('feature_list', FeatureListBlock()),
+        ('counter', CounterBlock()),
+        ('table', TablaCustomBlock([
+            ('text', blocks.CharBlock()),
+            ('numeric', blocks.FloatBlock()),
+            ('rich_text', blocks.RichTextBlock()),
+            ('image', ImageChooserBlock()),
+        ])),
+        ('tab', TabBlock()),
     ], null=True, blank=True)
 
     content_panels = Page.content_panels + [
@@ -302,42 +312,56 @@ class GaleriaItem(Orderable):
 
 
 # [Galeria] - Fin
+class CustomIndexPage(Page):
+    max_count = 1
+    intro = RichTextField(blank=True)
+    content_panels = Page.content_panels + [
+        FieldPanel('intro', classname="full")
+    ]
+    subpage_types = ['CustomPage']
 
 
 class CustomPage(Page):
     template = 'custom/custom_page.html'
     name = models.CharField(max_length=255)
-    body = StreamField([
-        ('texto_imagen_arriba', TextImageTopBlock()),
-        ('texto_imagen_abajo', TextImageBottomBlock()),
-        ('texto_imagen_derecha', TextImageRightBlock()),
-        ('texto_imagen_izquierda', TextImageLeftBlock()),
-        ('texto_primario_y_secundario', TextPrimarySecondaryBlock()),
-        ('cita', QuoteBlock()),
-        ('galeria', GalleryBlock()),
-        ('video_embebido', VideoEmbedBlock()),
-        ('boton_mas_accion', CallToActionBlock()),
+    content_extra = StreamField([
+        ('simple_text', SimpleTextBlock()),
+        ('rich_text', RichTextBlock()),
+        ('text_image_above', TextImageTopBlock()),
+        ('text_image_below', TextImageBottomBlock()),
+        ('text_image_right', TextImageRightBlock()),
+        ('text_image_left', TextImageLeftBlock()),
+        ('primary_and_secondary_text', TextPrimarySecondaryBlock()),
+        ('quote', QuoteBlock()),
+        ('gallery', GalleryBlock()),
+        ('embed_video', VideoEmbedBlock()),
+        ('call_to_action', CallToActionBlock()),
         ('accordion', AccordionBlock()),
-        ('caracteristica', FeatureListBlock()),
-        ('estadisticas', CounterBlock()),
-        ('documento', DocumentBlock()),
-        ('pestannas', TabBlock()),
+        ('feature_list', FeatureListBlock()),
+        ('counter', CounterBlock()),
+        ('table', TablaCustomBlock([
+            ('text', blocks.CharBlock()),
+            ('numeric', blocks.FloatBlock()),
+            ('rich_text', blocks.RichTextBlock()),
+            ('image', ImageChooserBlock()),
+        ])),
+        ('tab', TabBlock()),
     ], null=True, blank=True)
 
     content_panels = Page.content_panels + [
         FieldPanel('name'),
-        FieldPanel('body'),
+        FieldPanel('content_extra'),
     ]
 
     class Meta:
-        verbose_name = "Página personalizada"
+        verbose_name = "Custom Page"
 
     def get_context(self, request):
         context = super().get_context(request)
-        home_page = HomePage.objects.live().first()
+        about = AboutPage.objects.live().first()
         galeria = GaleriaPage.objects.first()
         context['galeria'] = galeria
-        context['home_page'] = home_page
+        context['about'] = about
 
         return context
 
@@ -375,36 +399,28 @@ class ServicesPage(Page):
         on_delete=models.SET_NULL,
         related_name='+'
     )
-    contenido_extra = StreamField([
-        ('texto_imagen_arriba', TextImageTopBlock()),
-        ('texto_imagen_abajo', TextImageBottomBlock()),
-        ('texto_imagen_derecha', TextImageRightBlock()),
-        ('texto_imagen_izquierda', TextImageLeftBlock()),
-        ('texto_primario_y_secundario', TextPrimarySecondaryBlock()),
-        ('cita', QuoteBlock()),
-        ('galeria', GalleryBlock()),
-        ('video_embebido', VideoEmbedBlock()),
-        ('boton_mas_accion', CallToActionBlock()),
+    content_extra = StreamField([
+        ('simple_text', SimpleTextBlock()),
+        ('rich_text', RichTextBlock()),
+        ('text_image_above', TextImageTopBlock()),
+        ('text_image_below', TextImageBottomBlock()),
+        ('text_image_right', TextImageRightBlock()),
+        ('text_image_left', TextImageLeftBlock()),
+        ('primary_and_secondary_text', TextPrimarySecondaryBlock()),
+        ('quote', QuoteBlock()),
+        ('gallery', GalleryBlock()),
+        ('embed_video', VideoEmbedBlock()),
+        ('call_to_action', CallToActionBlock()),
         ('accordion', AccordionBlock()),
-        ('caracteristica', FeatureListBlock()),
-        ('estadisticas', CounterBlock()),
-        ('documento', DocumentBlock()),
-        ('pestannas', TabBlock()),
-        # ('tabla', TableBlock()),
+        ('feature_list', FeatureListBlock()),
+        ('counter', CounterBlock()),
         ('table', TablaCustomBlock([
             ('text', blocks.CharBlock()),
             ('numeric', blocks.FloatBlock()),
             ('rich_text', blocks.RichTextBlock()),
             ('image', ImageChooserBlock()),
-            ('country', ChoiceBlock(choices=[
-                ('be', 'Belgium'),
-                ('fr', 'France'),
-                ('de', 'Germany'),
-                ('nl', 'Netherlands'),
-                ('pl', 'Poland'),
-                ('uk', 'United Kingdom'),
-            ])),
-        ]))
+        ])),
+        ('tab', TabBlock()),
     ], null=True, blank=True)
 
     content_panels = Page.content_panels + [
@@ -416,8 +432,8 @@ class ServicesPage(Page):
             FieldPanel('description'),
             FieldPanel('icono'),
             FieldPanel('image'),
-        ], heading="Información del Módulo"),
-        FieldPanel('contenido_extra', classname="full"),
+        ], heading="Services Infomation"),
+        FieldPanel('content_extra', classname="full"),
     ]
 
     class Meta:
@@ -454,10 +470,41 @@ class FormPage(AbstractEmailForm):
         ], "Email"),
     ]
 
-    # def process_form_submission(self, form):
-    #     submission = CustomFormSubmission(
-    #         form_data=form.cleaned_data,
-    #         page=self,
-    #     )
-    #     submission.save()
-    #     super().process_form_submission(form)
+    def get_context(self, request):
+        context = super().get_context(request)
+        about = AboutPage.objects.live().first()
+        context['about'] = about
+        return context
+    
+    # intervenir form_save
+    def process_form_submission(self, form):
+        try:
+            submition = self.get_submission_class().objects.create(
+                form_data=form.cleaned_data,
+                page=self
+            )
+        except Exception as e:
+            raise Exception("There was a problem saving your data. Please try again later.")
+
+        try:
+            template = render_to_string('mail.html', {
+                'name': form.cleaned_data['name'],
+                'email': form.cleaned_data['email'],
+                'phone': form.cleaned_data['phone'],
+                'services': form.cleaned_data['services'],
+                'message': form.cleaned_data['message'],
+
+            })
+            email_sender = EmailMessage(
+                'Message for services',
+                template,
+                EMAIL_HOST_USER,
+                [self.to_address]
+            )
+            email_sender.content_subtype = 'html'
+            email_sender.send(fail_silently=False)
+            print('Email sent successfully')
+        except Exception as e:
+            raise Exception("Your data has been saved, but there was a problem sending the email. We will contact you.")
+
+        return submition

@@ -1,29 +1,32 @@
-# def contacto(request):
-#     home_page = HomePage.objects.live().first()
-#     galeria = GaleriaPage.objects.live().first()
-#     if request.method == 'POST':
-#         form = ContactForm(request.POST, request.FILES)
-#
-#         if form.is_valid():
-#             # instancia = MensajeContacto(
-#             #     nombre=form.cleaned_data['nombre'],
-#             #     tipo_mensaje=request.POST.get('tipo_mensaje'),
-#             #     correo=form.cleaned_data['correo'],
-#             #     telefono=form.cleaned_data['telefono'],
-#             #     especialidad=form.cleaned_data['especialidad'],
-#             #     asunto=form.cleaned_data['asunto'],
-#             #     mensaje=form.cleaned_data['mensaje'],
-#             #     adjunto=form.cleaned_data['adjunto']
-#             # )
-#             form.save()
-#             # instancia.save()
-#             messages.success(request, '¡Su mensaje ha sido enviado. Gracias!')
-#             return redirect('home:contacto')
-#     else:
-#         form = ContactForm()
-#
-#     context = {}
-#     context['home_page'] = home_page
-#     context['galeria'] = galeria
-#     context['form'] = form
-#     return render(request, 'contacto.html', context)
+import smtplib
+from email.mime.text import MIMEText
+
+from django.core.mail import send_mail
+
+from mysite.settings.base import EMAIL_HOST_USER, EMAIL_HOST, EMAIL_HOST_PASSWORD
+
+
+def enviar_correo():
+    smtp_server = EMAIL_HOST
+    smtp_port = 587
+    smtp_username = EMAIL_HOST_USER
+    smtp_password = EMAIL_HOST_PASSWORD
+
+    # Create an email message
+    message = MIMEText('This is a test email')
+    message['Subject'] = 'Test Email'
+    message['From'] = 'rodolfo@code43w.net'
+    message['To'] = 'rodolfo@code43w.net'
+
+    # Establish a connection to the SMTP server
+    smtp_connection = smtplib.SMTP(smtp_server, smtp_port)
+    smtp_connection.starttls()
+
+    # Log in to the SMTP server
+    smtp_connection.login(smtp_username, smtp_password)
+
+    # Send the email
+    smtp_connection.send_message(message)
+
+    # Close the SMTP connection
+    smtp_connection.quit()

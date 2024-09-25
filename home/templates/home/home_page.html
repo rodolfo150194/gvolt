@@ -4,8 +4,7 @@
 {% block body_class %}template-homepage{% endblock %}
 
 {% block extra_css %}
-    {#    <link href="{% static 'lib/transition/transition.min.css' %}" rel="stylesheet">#}
-
+   
 {% endblock extra_css %}
 
 {% block content %}
@@ -78,30 +77,34 @@
     {% if about.fragments_information.all.count > 0 %}
         {% for frag in about.fragments_information.all %}
             <div class="container w-75 text-center py-5">
-                <div class="row g-5 align-items-center">
-                    {% if forloop.counter0|divisibleby:2 %}
-                        <div class="offset-2 col-lg-5">
-                            {% image frag.imagen original as img_frag %}
-                            <img class="img-fluid rounded wow fadeInLeft" src="{{ img_frag.url }}" alt="" 
-                                 style="clip-path: polygon(75% 0%, 100% 50%, 75% 100%, 0% 100%, 25% 50%, 0% 0%);">
-                        </div>
-                        <div class="col-lg-5 wow fadeInRight" data-wow-delay="0.1s">
-                            <h1 class="display-5 mb-4">{{ frag.name }}</h1>
-                            <p class="mb-4">{{ frag.descripcion | richtext }}</p>
-                        </div>
-                    {% else %}
-                        <div class="col-lg-5 wow fadeInLeft" data-wow-delay="0.1s">
-                            <h1 class="display-5 mb-4">{{ frag.name }}</h1>
-                            <p class="mb-4">{{ frag.descripcion | richtext }}</p>
-                        </div>
-                        <div class="col-lg-5">
-                            {% image frag.imagen original as img_frag %}
-                            <img class="img-fluid rounded wow fadeInRight" src="{{ img_frag.url }}" alt=""
-                                 style="clip-path: polygon(100% 0%, 75% 50%, 100% 100%, 25% 100%, 0% 50%, 25% 0%);">
-                        </div>
-                    {% endif %}
+    <div class="row g-5 align-items-center">
+        {% if forloop.counter0|divisibleby:2 %}
+            <div class="col-lg-6">
+                {% image frag.imagen original as img_frag %}
+                <div class="image-container" style="width: 100%; padding-top: 100%; position: relative; overflow: hidden;">
+                    <img class="img-fluid rounded wow fadeInLeft" src="{{ img_frag.url }}" alt=""
+                         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; clip-path: polygon(75% 0%, 100% 50%, 75% 100%, 0% 100%, 25% 50%, 0% 0%);">
                 </div>
             </div>
+            <div class="col-lg-6 wow fadeInRight" data-wow-delay="0.1s">
+                <h1 class="display-5 mb-4">{{ frag.name }}</h1>
+                <p class="mb-4">{{ frag.descripcion | richtext }}</p>
+            </div>
+        {% else %}
+            <div class="col-lg-6 wow fadeInLeft" data-wow-delay="0.1s">
+                <h1 class="display-5 mb-4">{{ frag.name }}</h1>
+                <p class="mb-4">{{ frag.descripcion | richtext }}</p>
+            </div>
+            <div class="col-lg-6">
+                {% image frag.imagen original as img_frag %}
+                <div class="image-container" style="width: 100%; padding-top: 100%; position: relative; overflow: hidden;">
+                    <img class="img-fluid rounded wow fadeInRight" src="{{ img_frag.url }}" alt=""
+                         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; clip-path: polygon(100% 0%, 75% 50%, 100% 100%, 25% 100%, 0% 50%, 25% 0%);">
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
         {% endfor %}
     {% endif %}
     {% if services %}
@@ -209,7 +212,7 @@
                         </div>
                         <div class="border border-5 border-light border-top-0 p-4">
                             <p class="text-primary fw-medium mb-2">General Carpentry</p>
-                            <h5 class="lh-base mb-0">Wooden Furniture Manufacturing And Remodeling</a>
+                            <h5 class="lh-base mb-0">Wooden Furniture Manufacturing And Remodeling</h5>
                         </div>
                     </div>
                 </div>

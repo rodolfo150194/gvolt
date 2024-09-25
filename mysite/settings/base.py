@@ -21,8 +21,8 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
-ALLOWED_HOSTS = [".vercel.app"]
-
+ALLOWED_HOSTS = [".vercel.app",]
+# ALLOWED_HOSTS = ["127.0.0.1", "*"]
 # Application definition
 THIRD_PARTY_APPS = [
     "widget_tweaks",
@@ -190,3 +190,19 @@ WAGTAILADMIN_BASE_URL = "http://example.com"
 # see https://docs.wagtail.org/en/stable/advanced_topics/deploying.html#user-uploaded-files
 WAGTAILDOCS_EXTENSIONS = ['csv', 'docx', 'key', 'odt', 'pdf', 'pptx', 'rtf', 'txt', 'xlsx', 'zip']
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = 'services@gvoltcorp.com'
+# EMAIL_HOST_PASSWORD = 's3rv1c3s.gv0lt'
+# EMAIL_USE_TLS = True
+
+EMAIL_HOST = 'srv50118-206152.vps.etecsa.cu'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.imitate.email'
+EMAIL_PORT = '587'
+EMAIL_HOST_USER = 'rodolfo@code43w.net'
+EMAIL_HOST_PASSWORD = 'Rody1501.'
+EMAIL_USE_TLS = True  # Set to True if your email provider requires TLS
