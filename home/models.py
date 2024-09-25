@@ -8,16 +8,12 @@ from wagtail.admin.panels.inline_panel import InlinePanel
 from wagtail.blocks import ChoiceBlock
 from wagtail.contrib.forms.models import AbstractFormField, AbstractEmailForm, AbstractFormSubmission
 from wagtail.contrib.forms.panels import FormSubmissionsPanel
-from wagtail.contrib.typed_table_block.blocks import TypedTableBlock
 from wagtail.fields import RichTextField, StreamField
 
 from wagtail.models import Page, Orderable
 from wagtail.snippets.models import register_snippet
-from wagtail_modeladmin.options import ModelAdmin
 
 from blocks.models import *
-from blocks.utils import default_table_block_options
-from mysite import settings
 from mysite.settings.base import EMAIL_HOST_USER
 
 
@@ -475,7 +471,7 @@ class FormPage(AbstractEmailForm):
         about = AboutPage.objects.live().first()
         context['about'] = about
         return context
-    
+
     # intervenir form_save
     def process_form_submission(self, form):
         try:

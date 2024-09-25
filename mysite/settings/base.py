@@ -22,7 +22,6 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 ALLOWED_HOSTS = [".vercel.app",]
-# ALLOWED_HOSTS = ["127.0.0.1", "*"]
 # Application definition
 THIRD_PARTY_APPS = [
     "widget_tweaks",

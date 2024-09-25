@@ -1,11 +1,5 @@
-from django.db import models
-
-# Create your models here.
-from django.db import models
 from modelcluster.models import ClusterableModel
 from wagtail import blocks
-from wagtail.admin.panels import FieldPanel, MultiFieldPanel, InlinePanel
-from wagtail.contrib.table_block.blocks import TableBlock
 from wagtail.contrib.typed_table_block.blocks import TypedTableBlock
 from wagtail.documents.blocks import DocumentChooserBlock
 from wagtail.images.blocks import ImageChooserBlock
